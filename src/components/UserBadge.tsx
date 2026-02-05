@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+type Gender = "male" | "female" | "other";
+
 type UserProfile = {
   name: string;
-  gender?: "male" | "female" | "other";
+  gender?: Gender;
   role?: "patient" | "clinic";
   clinicName?: string;
 };
 
-const avatarMap: Record<UserProfile["gender"], { src: string; alt: string }> = {
+const avatarMap: Record<Gender, { src: string; alt: string }> = {
   male: { src: "/avatars/male.svg", alt: "Male user" },
   female: { src: "/avatars/female.svg", alt: "Female user" },
   other: { src: "/avatars/other.svg", alt: "User" },

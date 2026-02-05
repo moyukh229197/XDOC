@@ -9,6 +9,41 @@ import { bookings, doctors, neighborhoods, specialties } from "@/lib/data";
 export default function Home() {
   const [doctorList, setDoctorList] = useState(doctors);
   const topDoctors = useMemo(() => doctorList.slice(0, 3), [doctorList]);
+  const emergencyContacts = [
+    { label: "Ambulance", phone: "102" },
+    { label: "District Hospital", phone: "+91 98765 43210" },
+    { label: "Emergency OPD", phone: "+91 98765 43211" },
+  ];
+  const waitingCards = [
+    {
+      name: "Main Road Clinic",
+      status: "low",
+      time: "15 mins",
+      waiting: "3 patients",
+      available: "2 doctors",
+    },
+    {
+      name: "Heart Care Center",
+      status: "medium",
+      time: "30 mins",
+      waiting: "7 patients",
+      available: "1 doctor",
+    },
+    {
+      name: "Children's Clinic",
+      status: "low",
+      time: "10 mins",
+      waiting: "2 patients",
+      available: "1 doctor",
+    },
+    {
+      name: "City Hospital OPD",
+      status: "high",
+      time: "45 mins",
+      waiting: "12 patients",
+      available: "3 doctors",
+    },
+  ];
 
   useEffect(() => {
     fetch("/api/doctors")
@@ -25,11 +60,11 @@ export default function Home() {
     <div className="pt-6 pb-8 relative">
       <div className="rajbari-sketch" aria-hidden="true" />
       {/* Reduced header vertical padding to remove excess space around logo/nav. */}
-      <header className="container pt-1 pb-3 fade-up">
+      <header className="container pt-0 pb-2 fade-up">
         <nav className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-3 -mb-12">
-            <div className="flex h-72 items-center justify-center">
-              <img src="/images/xdoc-logo-wide.png" alt="XDOC logo" className="h-72 w-auto" />
+          <div className="flex items-center gap-3 -mb-10">
+            <div className="flex h-64 items-center justify-center">
+              <img src="/images/xdoc-logo-wide.png" alt="XDOC logo" className="h-64 w-auto" />
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-sm text-[color:var(--muted)]">
@@ -248,6 +283,98 @@ export default function Home() {
             <p className="mt-2 text-3xl font-semibold">Flat ₹10 booking fee</p>
             <p className="mt-1 text-sm text-white/80">No extra charges</p>
           </div>
+        </div>
+
+        <div className="mb-12 grid gap-8">
+          <div className="rounded-[32px] border border-[#ffb6b6] bg-[#fff3f3] p-6 md:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-6">
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-red-500">
+                    !
+                  </span>
+                  <h3 className="text-xl font-semibold text-red-700">
+                    Medical Emergency?
+                  </h3>
+                </div>
+                <p className="mt-2 text-sm text-red-600">
+                  For life-threatening emergencies, call these numbers immediately. XDOC is for
+                  planned consultations only.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {emergencyContacts.map((contact) => (
+                    <a
+                      key={contact.label}
+                      className="rounded-full border border-red-300 bg-white px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                      href={`tel:${contact.phone.replace(/\s+/g, "")}`}
+                    >
+                      {contact.label} {contact.phone}
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white text-3xl text-red-500">
+                +
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#ffe7db] px-4 py-1 text-xs font-semibold text-[#ff5a2c]">
+              Live Updates
+            </span>
+            <h3 className="mt-4 text-3xl">Current Waiting Times</h3>
+            <p className="mt-2 text-sm text-[color:var(--muted)]">
+              Real-time updates from clinics in Cooch Behar
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {waitingCards.map((card) => (
+              <div key={card.name} className="card">
+                <div className="flex items-start justify-between gap-3">
+                  <h4 className="text-lg font-semibold">{card.name}</h4>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      card.status === "low"
+                        ? "bg-[#e4f8e9] text-[#1b8f4e]"
+                        : card.status === "medium"
+                        ? "bg-[#fff3cc] text-[#a76a00]"
+                        : "bg-[#ffe0d6] text-[#c84f1b]"
+                    }`}
+                  >
+                    {card.status}
+                  </span>
+                </div>
+                <p className="mt-3 text-2xl font-semibold text-[#ff5a2c]">
+                  {card.time}
+                </p>
+                <div className="mt-4 grid gap-2 text-sm text-[color:var(--muted)]">
+                  <div className="flex items-center justify-between">
+                    <span>Waiting</span>
+                    <span className="font-semibold text-[color:var(--ink)]">
+                      {card.waiting}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Available</span>
+                    <span className="font-semibold text-[color:var(--ink)]">
+                      {card.available}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-5">
+                  <Link className="button-outline w-full justify-center" href="/clinic">
+                    View clinic
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-xs text-[color:var(--muted)]">
+            Updated every 5 minutes • Last update: 2 mins ago
+          </p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
