@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function AuthPage() {
+  const [accountType, setAccountType] = useState<"patient" | "clinic" | null>(
+    null
+  );
   const [name, setName] = useState("");
+  const [clinicName, setClinicName] = useState("");
+  const [contactName, setContactName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState<"male" | "female" | "other">("male");
@@ -14,7 +19,15 @@ export default function AuthPage() {
   const [status, setStatus] = useState<"idle" | "sending" | "verified">("idle");
   const router = useRouter();
 
-  const canSend = name.trim() && email.trim() && phone.trim();
+  const canSendPatient =
+    name.trim() && email.trim() && phone.trim() && accountType === "patient";
+  const canSendClinic =
+    clinicName.trim() &&
+    contactName.trim() &&
+    email.trim() &&
+    phone.trim() &&
+    accountType === "clinic";
+  const canSend = canSendPatient || canSendClinic;
 
   return (
     <div className="container py-10">
@@ -33,6 +46,40 @@ export default function AuthPage() {
       <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="card">
           <div className="grid gap-4">
+            <div>
+              <label className="text-sm text-[color:var(--muted)]">
+                Continue as
+              </label>
+              <div className="mt-2 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  className={`rounded-full border px-4 py-2 text-sm ${
+                    accountType === "patient"
+                      ? "border-transparent bg-[color:var(--accent-1)] text-white"
+                      : "border-[color:var(--stroke)] bg-white"
+                  }`}
+                  onClick={() => setAccountType("patient")}
+                >
+                  Patient
+                </button>
+                <button
+                  type="button"
+                  className={`rounded-full border px-4 py-2 text-sm ${
+                    accountType === "clinic"
+                      ? "border-transparent bg-[color:var(--accent-1)] text-white"
+                      : "border-[color:var(--stroke)] bg-white"
+                  }`}
+                  onClick={() => setAccountType("clinic")}
+                >
+                  Clinic
+                </button>
+              </div>
+              <p className="mt-2 text-xs text-[color:var(--muted)]">
+                Choose the option that matches your account. 
+              </p>
+            </div>
+
+            {accountType === "patient" ? (
             <div>
               <label className="text-sm text-[color:var(--muted)]">Full name</label>
               <input
@@ -72,6 +119,56 @@ export default function AuthPage() {
                 <option value="other">Other</option>
               </select>
             </div>
+            ) : null}
+
+            {accountType === "clinic" ? (
+              <>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">
+                    Clinic name
+                  </label>
+                  <input
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    placeholder="Clinic or hospital name"
+                    value={clinicName}
+                    onChange={(e) => setClinicName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">
+                    Contact person
+                  </label>
+                  <input
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    placeholder="Admin or coordinator name"
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">
+                    Email address
+                  </label>
+                  <input
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    placeholder="clinic@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">
+                    Mobile number
+                  </label>
+                  <input
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    placeholder="+91 98xxxxxxx"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+              </>
+            ) : null}
             <button
               className="button-primary"
               disabled={!canSend || status === "sending"}
@@ -104,12 +201,20 @@ export default function AuthPage() {
             </div>
             <button
               className="button-outline"
-              disabled={!sent || !otp}
+              disabled={!sent || !otp || !accountType}
               onClick={() => {
                 setStatus("verified");
                 window.localStorage.setItem(
                   "xdoc-user",
-                  JSON.stringify({ name: name.trim(), gender })
+                  JSON.stringify(
+                    accountType === "clinic"
+                      ? {
+                          name: contactName.trim() || "Clinic Admin",
+                          role: "clinic",
+                          clinicName: clinicName.trim(),
+                        }
+                      : { name: name.trim(), gender, role: "patient" }
+                  )
                 );
                 setTimeout(() => {
                   router.push("/");

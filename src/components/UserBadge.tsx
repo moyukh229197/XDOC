@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from "react";
 
 type UserProfile = {
   name: string;
-  gender: "male" | "female" | "other";
+  gender?: "male" | "female" | "other";
+  role?: "patient" | "clinic";
+  clinicName?: string;
 };
 
 const avatarMap: Record<UserProfile["gender"], { src: string; alt: string }> = {
@@ -24,7 +26,7 @@ export default function UserBadge() {
     if (!raw) return;
     try {
       const parsed = JSON.parse(raw) as UserProfile;
-      if (parsed?.name && parsed?.gender) setUser(parsed);
+      if (parsed?.name) setUser(parsed);
     } catch {
       // ignore
     }
@@ -60,7 +62,9 @@ export default function UserBadge() {
     );
   }
 
-  const avatar = avatarMap[user.gender] ?? avatarMap.other;
+  const avatar = avatarMap[user.gender ?? "other"] ?? avatarMap.other;
+  const displayName =
+    user.role === "clinic" && user.clinicName ? user.clinicName : user.name;
 
   return (
     <div className="relative" ref={menuRef}>
@@ -70,7 +74,7 @@ export default function UserBadge() {
         onClick={() => setOpen((prev) => !prev)}
       >
         <img src={avatar.src} alt={avatar.alt} className="h-8 w-8 rounded-full" />
-        <span className="font-semibold">{user.name}</span>
+        <span className="font-semibold">{displayName}</span>
       </button>
 
       {open ? (
