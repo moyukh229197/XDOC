@@ -1,11 +1,39 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { clinicCalendars, getDemoCalendar } from "@/lib/data";
+import { useEffect, useMemo, useState } from "react";
+import { clinicCalendars, clinicIdFromName, doctors, getDemoCalendar } from "@/lib/data";
 
 export default function ClinicCalendar() {
   const [query, setQuery] = useState("");
+  const [doctorList, setDoctorList] = useState(doctors);
+
+  useEffect(() => {
+    fetch("/api/doctors")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data?.doctors) && data.doctors.length) {
+          setDoctorList(data.doctors);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const clinicRatings = useMemo(() => {
+    const map = new Map<string, { total: number; count: number }>();
+    doctorList.forEach((doctor) => {
+      const key = doctor.clinic;
+      const entry = map.get(key) ?? { total: 0, count: 0 };
+      entry.total += doctor.rating;
+      entry.count += 1;
+      map.set(key, entry);
+    });
+    const ratingMap = new Map<string, number>();
+    map.forEach((value, key) => {
+      ratingMap.set(key, Math.round((value.total / value.count) * 10) / 10);
+    });
+    return ratingMap;
+  }, [doctorList]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -53,7 +81,8 @@ export default function ClinicCalendar() {
               <div>
                 <h2 className="text-xl font-semibold">{calendar.doctorName}</h2>
                 <p className="text-sm text-[color:var(--muted)]">
-                  {calendar.clinic} • {calendar.location}
+                  {calendar.clinic} • {calendar.location} •{" "}
+                  {clinicRatings.get(calendar.clinic) ?? "4.5"}★
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-4">
@@ -76,6 +105,12 @@ export default function ClinicCalendar() {
                 </div>
                 <Link className="button-outline" href={`/doctors/${calendar.doctorId}`}>
                   View profile
+                </Link>
+                <Link
+                  className="button-outline"
+                  href={`/clinic/${clinicIdFromName(calendar.clinic)}`}
+                >
+                  View clinic
                 </Link>
               </div>
             </div>

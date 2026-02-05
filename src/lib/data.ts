@@ -23,6 +23,66 @@ export type Doctor = {
   profileImage: string;
 };
 
+export type Clinic = {
+  id: string;
+  name: string;
+  location: string;
+  rating: number;
+  waitTime: string;
+  status: "low" | "medium" | "high";
+  waiting: string;
+  available: string;
+};
+
+export const clinicIdFromName = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+export const clinics: Clinic[] = [
+  {
+    id: "cooch-behar-city-clinic",
+    name: "Cooch Behar City Clinic",
+    location: "Cooch Behar Town",
+    rating: 4.6,
+    waitTime: "15 mins",
+    status: "low",
+    waiting: "3 patients",
+    available: "2 doctors",
+  },
+  {
+    id: "north-bengal-skin-studio",
+    name: "North Bengal Skin Studio",
+    location: "Dinhata",
+    rating: 4.5,
+    waitTime: "30 mins",
+    status: "medium",
+    waiting: "7 patients",
+    available: "1 doctor",
+  },
+  {
+    id: "little-steps-children-care",
+    name: "Little Steps Children Care",
+    location: "Tufanganj",
+    rating: 4.7,
+    waitTime: "10 mins",
+    status: "low",
+    waiting: "2 patients",
+    available: "1 doctor",
+  },
+  {
+    id: "sunrise-specialty-clinic",
+    name: "Sunrise Specialty Clinic",
+    location: "Dinhata",
+    rating: 4.4,
+    waitTime: "45 mins",
+    status: "high",
+    waiting: "12 patients",
+    available: "3 doctors",
+  },
+];
+
 export const doctors: Doctor[] = [
   {
     id: "dr-general-physician-1",

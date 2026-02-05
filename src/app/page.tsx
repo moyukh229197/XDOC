@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import AuthLink from "@/components/AuthLink";
 import UserBadge from "@/components/UserBadge";
-import { bookings, doctors, neighborhoods, specialties } from "@/lib/data";
+import { bookings, clinicIdFromName, clinics, doctors, neighborhoods, specialties } from "@/lib/data";
 
 export default function Home() {
   const [doctorList, setDoctorList] = useState(doctors);
@@ -14,36 +14,7 @@ export default function Home() {
     { label: "District Hospital", phone: "+91 98765 43210" },
     { label: "Emergency OPD", phone: "+91 98765 43211" },
   ];
-  const waitingCards = [
-    {
-      name: "Main Road Clinic",
-      status: "low",
-      time: "15 mins",
-      waiting: "3 patients",
-      available: "2 doctors",
-    },
-    {
-      name: "Heart Care Center",
-      status: "medium",
-      time: "30 mins",
-      waiting: "7 patients",
-      available: "1 doctor",
-    },
-    {
-      name: "Children's Clinic",
-      status: "low",
-      time: "10 mins",
-      waiting: "2 patients",
-      available: "1 doctor",
-    },
-    {
-      name: "City Hospital OPD",
-      status: "high",
-      time: "45 mins",
-      waiting: "12 patients",
-      available: "3 doctors",
-    },
-  ];
+  const waitingCards = clinics;
 
   useEffect(() => {
     fetch("/api/doctors")
@@ -313,8 +284,20 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white text-3xl text-red-500">
-                +
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white text-red-500">
+                <svg
+                  width="44"
+                  height="44"
+                  viewBox="0 0 64 64"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="8" y="24" width="34" height="20" rx="4" stroke="#ff4d4d" strokeWidth="3" />
+                  <rect x="40" y="28" width="12" height="16" rx="3" stroke="#ff4d4d" strokeWidth="3" />
+                  <circle cx="20" cy="48" r="5" stroke="#ff4d4d" strokeWidth="3" />
+                  <circle cx="44" cy="48" r="5" stroke="#ff4d4d" strokeWidth="3" />
+                  <path d="M18 18h6v-6h6v6h6v6h-6v6h-6v-6h-6v-6z" fill="#ff4d4d" />
+                </svg>
               </div>
             </div>
           </div>
@@ -331,9 +314,14 @@ export default function Home() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {waitingCards.map((card) => (
-              <div key={card.name} className="card">
+              <div key={card.id} className="card">
                 <div className="flex items-start justify-between gap-3">
-                  <h4 className="text-lg font-semibold">{card.name}</h4>
+                  <div>
+                    <h4 className="text-lg font-semibold">{card.name}</h4>
+                    <p className="mt-1 text-xs text-[color:var(--muted)]">
+                      {card.location} • {card.rating}★ rating
+                    </p>
+                  </div>
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-semibold ${
                       card.status === "low"
@@ -347,7 +335,7 @@ export default function Home() {
                   </span>
                 </div>
                 <p className="mt-3 text-2xl font-semibold text-[#ff5a2c]">
-                  {card.time}
+                  {card.waitTime}
                 </p>
                 <div className="mt-4 grid gap-2 text-sm text-[color:var(--muted)]">
                   <div className="flex items-center justify-between">
@@ -364,7 +352,10 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="mt-5">
-                  <Link className="button-outline w-full justify-center" href="/clinic">
+                  <Link
+                    className="button-outline w-full justify-center"
+                    href={`/clinic/${clinicIdFromName(card.name)}`}
+                  >
                     View clinic
                   </Link>
                 </div>
