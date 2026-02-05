@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" rx="56" fill="#f9f3ec"/>
+  <rect x="40" y="40" width="1120" height="620" rx="44" fill="#fff"/>
+  <text x="110" y="200" font-family="Arial" font-size="60" font-weight="700" fill="#2f5b86">Cooch Behar</text>
+  <text x="110" y="270" font-family="Arial" font-size="60" font-weight="700" fill="#2f5b86">&amp; Subdivisions</text>
+
+  <path d="M220 410c40-60 140-90 220-80 80 10 150 40 220 20 60-18 120-10 150 20 50 50 40 120-10 160-60 50-180 70-300 50-120-20-230-60-280-120-30-40-30-80 0-130z" fill="#2e91a3"/>
+  <path d="M520 420c40-20 90-10 130 10 30 20 20 60-10 80-40 26-120 30-170 10-30-12-30-70 50-100z" fill="#69c06e"/>
+  <path d="M720 360c60-30 140-20 180 20 30 30 20 70-20 90-60 30-170 30-220-10-20-20-10-70 60-100z" fill="#f3c24f"/>
+  <path d="M760 470c50-20 140-10 170 40 20 40-10 80-60 90-70 12-170-10-210-50-20-20-10-60 100-80z" fill="#f09bb1"/>
+
+  <circle cx="430" cy="360" r="36" fill="#ee6b5a"/>
+  <circle cx="430" cy="360" r="16" fill="#fff"/>
+  <text x="480" y="370" font-family="Arial" font-size="28" font-weight="700" fill="#fff">Cooch Behar</text>
+  <text x="600" y="470" font-family="Arial" font-size="24" font-weight="700" fill="#fff">Dinhata</text>
+  <text x="840" y="400" font-family="Arial" font-size="24" font-weight="700" fill="#fff">Mathabhanga</text>
+  <text x="820" y="560" font-family="Arial" font-size="24" font-weight="700" fill="#fff">Mekhliganj</text>
+</svg>

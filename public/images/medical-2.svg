@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff4e6"/>
+      <stop offset="100%" stop-color="#eaf5ef"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="520" rx="32" fill="url(#bg2)"/>
+  <rect x="110" y="120" width="580" height="300" rx="28" fill="#ffffff" stroke="#e7dac9"/>
+  <rect x="180" y="170" width="300" height="18" rx="9" fill="#f3e2d2"/>
+  <rect x="180" y="210" width="360" height="16" rx="8" fill="#efe5d7"/>
+  <rect x="180" y="245" width="260" height="16" rx="8" fill="#efe5d7"/>
+  <rect x="180" y="280" width="200" height="16" rx="8" fill="#efe5d7"/>
+  <rect x="180" y="315" width="320" height="16" rx="8" fill="#efe5d7"/>
+  <rect x="520" y="185" width="120" height="120" rx="18" fill="#16697a" opacity="0.15"/>
+  <circle cx="580" cy="245" r="34" fill="#16697a"/>
+  <path d="M580 226v38M561 245h38" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+  <rect x="150" y="360" width="180" height="36" rx="18" fill="#12100e"/>
+  <text x="195" y="383" font-size="14" font-family="Arial" fill="#fff">Book now</text>
+</svg>
