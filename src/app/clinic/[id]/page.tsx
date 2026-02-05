@@ -12,6 +12,7 @@ type ClinicPageProps = {
 
 export default function ClinicProfilePage({ params }: ClinicPageProps) {
   const [doctorList, setDoctorList] = useState(doctors);
+  const [loading, setLoading] = useState(true);
   const clinicFromList = clinics.find(
     (item) => item.id === params.id || clinicIdFromName(item.name) === params.id
   );
@@ -24,7 +25,8 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
           setDoctorList(data.doctors);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const clinicDoctors = useMemo(() => {
@@ -50,6 +52,17 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
       available: `${Math.max(1, Math.min(3, clinicDoctors.length))} doctors`,
     };
   }, [clinicDoctors, clinicFromList, params.id]);
+
+  if (!clinic && loading) {
+    return (
+      <div className="container py-12">
+        <h1 className="section-title">Loading clinic...</h1>
+        <p className="mt-2 text-[color:var(--muted)]">
+          Fetching clinic details and doctor list.
+        </p>
+      </div>
+    );
+  }
 
   if (!clinic) {
     return (
