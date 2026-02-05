@@ -11,6 +11,10 @@ export default function AuthPage() {
   const [name, setName] = useState("");
   const [clinicName, setClinicName] = useState("");
   const [contactName, setContactName] = useState("");
+  const [clinicLocation, setClinicLocation] = useState("");
+  const [locationStatus, setLocationStatus] = useState<
+    "idle" | "locating" | "ok" | "error"
+  >("idle");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState<"male" | "female" | "other">("male");
@@ -24,6 +28,7 @@ export default function AuthPage() {
   const canSendClinic =
     clinicName.trim() &&
     contactName.trim() &&
+    clinicLocation.trim() &&
     email.trim() &&
     phone.trim() &&
     accountType === "clinic";
@@ -47,32 +52,42 @@ export default function AuthPage() {
         <div className="card">
           <div className="grid gap-4">
             <div>
-              <label className="text-sm text-[color:var(--muted)]">
-                Continue as
-              </label>
-              <div className="mt-2 flex flex-wrap gap-3">
-                <button
-                  type="button"
-                  className={`rounded-full border px-4 py-2 text-sm ${
-                    accountType === "patient"
-                      ? "border-transparent bg-[color:var(--accent-1)] text-white"
-                      : "border-[color:var(--stroke)] bg-white"
-                  }`}
-                  onClick={() => setAccountType("patient")}
-                >
-                  Patient
-                </button>
-                <button
-                  type="button"
-                  className={`rounded-full border px-4 py-2 text-sm ${
-                    accountType === "clinic"
-                      ? "border-transparent bg-[color:var(--accent-1)] text-white"
-                      : "border-[color:var(--stroke)] bg-white"
-                  }`}
-                  onClick={() => setAccountType("clinic")}
-                >
-                  Clinic
-                </button>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <label className="text-sm text-[color:var(--muted)]">
+                  Continue as
+                </label>
+                <div className="inline-flex items-center rounded-full border border-[color:var(--stroke)] bg-white p-1 text-sm">
+                  <button
+                    type="button"
+                    className={`rounded-full px-4 py-2 transition ${
+                      accountType === "patient"
+                        ? "text-white shadow"
+                        : "text-[color:var(--muted)]"
+                    }`}
+                    style={
+                      accountType === "patient"
+                        ? {
+                            backgroundImage:
+                              "linear-gradient(135deg, #ff8a3d 0%, #ff5a2c 100%)",
+                          }
+                        : undefined
+                    }
+                    onClick={() => setAccountType("patient")}
+                  >
+                    Patient
+                  </button>
+                  <button
+                    type="button"
+                    className={`rounded-full px-4 py-2 transition ${
+                      accountType === "clinic"
+                        ? "bg-[color:var(--accent-2)] text-white shadow"
+                        : "text-[color:var(--muted)]"
+                    }`}
+                    onClick={() => setAccountType("clinic")}
+                  >
+                    Clinic
+                  </button>
+                </div>
               </div>
               <p className="mt-2 text-xs text-[color:var(--muted)]">
                 Choose the option that matches your account. 
@@ -80,45 +95,49 @@ export default function AuthPage() {
             </div>
 
             {accountType === "patient" ? (
-            <div>
-              <label className="text-sm text-[color:var(--muted)]">Full name</label>
-              <input
-                className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
-                placeholder="Your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="text-sm text-[color:var(--muted)]">Email address</label>
-              <input
-                className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="text-sm text-[color:var(--muted)]">Mobile number</label>
-              <input
-                className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
-                placeholder="+91 98xxxxxxx"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="text-sm text-[color:var(--muted)]">Gender</label>
-              <select
-                className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
-                value={gender}
-                onChange={(e) => setGender(e.target.value as "male" | "female" | "other")}
-              >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
+              <>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">Full name</label>
+                  <input
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    placeholder="Your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">Email address</label>
+                  <input
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">Mobile number</label>
+                  <input
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    placeholder="+91 98xxxxxxx"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">Gender</label>
+                  <select
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    value={gender}
+                    onChange={(e) =>
+                      setGender(e.target.value as "male" | "female" | "other")
+                    }
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </>
             ) : null}
 
             {accountType === "clinic" ? (
@@ -133,6 +152,66 @@ export default function AuthPage() {
                     value={clinicName}
                     onChange={(e) => setClinicName(e.target.value)}
                   />
+                </div>
+                <div>
+                  <label className="text-sm text-[color:var(--muted)]">
+                    Clinic location (Google Maps)
+                  </label>
+                  <input
+                    className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                    placeholder="Paste Google Maps link or full address"
+                    value={clinicLocation}
+                    onChange={(e) => setClinicLocation(e.target.value)}
+                  />
+                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-[color:var(--muted)]">
+                    <span>Find on Maps:</span>
+                    <a
+                      className="rounded-full border border-[color:var(--stroke)] bg-white px-3 py-1"
+                      href={`https://www.google.com/maps/search/${encodeURIComponent(
+                        clinicName || "clinic near me"
+                      )}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Open Google Maps
+                    </a>
+                    <button
+                      type="button"
+                      className="rounded-full border border-[color:var(--stroke)] bg-white px-3 py-1"
+                      onClick={() => {
+                        if (!navigator.geolocation) {
+                          setLocationStatus("error");
+                          return;
+                        }
+                        setLocationStatus("locating");
+                        navigator.geolocation.getCurrentPosition(
+                          (pos) => {
+                            const lat = pos.coords.latitude.toFixed(6);
+                            const lng = pos.coords.longitude.toFixed(6);
+                            setClinicLocation(`${lat}, ${lng}`);
+                            setLocationStatus("ok");
+                          },
+                          () => {
+                            setLocationStatus("error");
+                          },
+                          { enableHighAccuracy: true, timeout: 10000 }
+                        );
+                      }}
+                    >
+                      Use current location
+                    </button>
+                  </div>
+                  {locationStatus === "locating" ? (
+                    <p className="mt-2 text-xs text-[color:var(--muted)]">
+                      Fetching your current location...
+                    </p>
+                  ) : null}
+                  {locationStatus === "error" ? (
+                    <p className="mt-2 text-xs text-[color:var(--accent-3)]">
+                      Unable to access location. Please allow location access or paste a
+                      Google Maps link.
+                    </p>
+                  ) : null}
                 </div>
                 <div>
                   <label className="text-sm text-[color:var(--muted)]">
@@ -212,6 +291,7 @@ export default function AuthPage() {
                           name: contactName.trim() || "Clinic Admin",
                           role: "clinic",
                           clinicName: clinicName.trim(),
+                          clinicLocation: clinicLocation.trim(),
                         }
                       : { name: name.trim(), gender, role: "patient" }
                   )
