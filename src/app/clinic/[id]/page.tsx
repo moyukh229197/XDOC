@@ -12,7 +12,9 @@ type ClinicPageProps = {
 
 export default function ClinicProfilePage({ params }: ClinicPageProps) {
   const [doctorList, setDoctorList] = useState(doctors);
-  const clinicFromList = clinics.find((item) => item.id === params.id);
+  const clinicFromList = clinics.find(
+    (item) => item.id === params.id || clinicIdFromName(item.name) === params.id
+  );
 
   useEffect(() => {
     fetch("/api/doctors")
@@ -159,9 +161,14 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
                 </p>
                 <div className="mt-auto flex items-center justify-between">
                   <span className="pill">{doctor.location}</span>
-                  <Link className="button-primary" href={`/book/${doctor.id}`}>
-                    Book now
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link className="button-outline" href={`/doctors/${doctor.id}`}>
+                      View profile
+                    </Link>
+                    <Link className="button-primary" href={`/book/${doctor.id}`}>
+                      Book now
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}
