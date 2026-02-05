@@ -16,6 +16,10 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
   const clinicFromList = clinics.find(
     (item) => item.id === params.id || clinicIdFromName(item.name) === params.id
   );
+  const slugToName = (value: string) =>
+    value
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
 
   useEffect(() => {
     fetch("/api/doctors")
@@ -37,19 +41,30 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
 
   const clinic = useMemo(() => {
     if (clinicFromList) return clinicFromList;
-    if (!clinicDoctors.length) return null;
-    const totalRating = clinicDoctors.reduce((sum, doc) => sum + doc.rating, 0);
-    const avgRating = Math.round((totalRating / clinicDoctors.length) * 10) / 10;
-    const location = clinicDoctors[0]?.location ?? "Cooch Behar";
+    if (clinicDoctors.length) {
+      const totalRating = clinicDoctors.reduce((sum, doc) => sum + doc.rating, 0);
+      const avgRating = Math.round((totalRating / clinicDoctors.length) * 10) / 10;
+      const location = clinicDoctors[0]?.location ?? "Cooch Behar";
+      return {
+        id: params.id,
+        name: clinicDoctors[0]?.clinic ?? "Clinic",
+        location,
+        rating: avgRating,
+        waitTime: "20 mins",
+        status: "medium" as const,
+        waiting: "5 patients",
+        available: `${Math.max(1, Math.min(3, clinicDoctors.length))} doctors`,
+      };
+    }
     return {
       id: params.id,
-      name: clinicDoctors[0]?.clinic ?? "Clinic",
-      location,
-      rating: avgRating,
+      name: slugToName(params.id),
+      location: "Cooch Behar",
+      rating: 4.5,
       waitTime: "20 mins",
       status: "medium" as const,
       waiting: "5 patients",
-      available: `${Math.max(1, Math.min(3, clinicDoctors.length))} doctors`,
+      available: "2 doctors",
     };
   }, [clinicDoctors, clinicFromList, params.id]);
 
@@ -64,19 +79,7 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
     );
   }
 
-  if (!clinic) {
-    return (
-      <div className="container py-12">
-        <h1 className="section-title">Clinic not found</h1>
-        <p className="mt-2 text-[color:var(--muted)]">
-          Please go back to the clinic list and try again.
-        </p>
-        <Link className="button-outline mt-6 inline-flex" href="/clinic">
-          Back to clinic calendar
-        </Link>
-      </div>
-    );
-  }
+  if (!clinic) return null;
 
   return (
     <div className="container py-12">
