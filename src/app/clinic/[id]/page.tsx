@@ -2,19 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useParams } from "next/navigation";
 import { clinicIdFromName, clinics, doctors } from "@/lib/data";
 
-type ClinicPageProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default function ClinicProfilePage({ params }: ClinicPageProps) {
+export default function ClinicProfilePage() {
+  const params = useParams();
+  const id = typeof params?.id === "string" ? params.id : "";
   const [doctorList, setDoctorList] = useState(doctors);
   const [loading, setLoading] = useState(true);
   const clinicFromList = clinics.find(
-    (item) => item.id === params.id || clinicIdFromName(item.name) === params.id
+    (item) => item.id === id || clinicIdFromName(item.name) === id
   );
   const slugToName = (value: string) =>
     value
@@ -35,9 +32,9 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
 
   const clinicDoctors = useMemo(() => {
     return doctorList.filter(
-      (doctor) => clinicIdFromName(doctor.clinic) === params.id
+      (doctor) => clinicIdFromName(doctor.clinic) === id
     );
-  }, [doctorList, params.id]);
+  }, [doctorList, id]);
 
   const clinic = useMemo(() => {
     if (clinicFromList) return clinicFromList;
@@ -57,8 +54,8 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
       };
     }
     return {
-      id: params.id,
-      name: slugToName(params.id),
+      id,
+      name: slugToName(id),
       location: "Cooch Behar",
       rating: 4.5,
       waitTime: "20 mins",
@@ -66,7 +63,7 @@ export default function ClinicProfilePage({ params }: ClinicPageProps) {
       waiting: "5 patients",
       available: "2 doctors",
     };
-  }, [clinicDoctors, clinicFromList, params.id]);
+  }, [clinicDoctors, clinicFromList, id]);
 
   if (!clinic && loading) {
     return (
