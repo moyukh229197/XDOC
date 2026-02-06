@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function AuthPage() {
+  const [step, setStep] = useState<"login" | "signup">("login");
   const [accountType, setAccountType] = useState<"patient" | "clinic" | null>(
     null
   );
@@ -41,7 +42,9 @@ export default function AuthPage() {
           <p className="text-sm uppercase tracking-[0.3em] text-[color:var(--muted)]">
             Login / Signup
           </p>
-          <h1 className="section-title">Sign up with your details</h1>
+          <h1 className="section-title">
+            {step === "login" ? "Sign in to your account" : "Sign up with your details"}
+          </h1>
         </div>
         <Link className="button-outline" href="/">
           Back to home
@@ -50,7 +53,52 @@ export default function AuthPage() {
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="card">
-          <div className="grid gap-4">
+          {step === "login" ? (
+            <div className="grid gap-4">
+              <div>
+                <label className="text-sm text-[color:var(--muted)]">Sign in</label>
+                <div className="mt-3 grid gap-3">
+                  <button
+                    type="button"
+                    className="button-outline w-full justify-center"
+                    onClick={() => {
+                      window.localStorage.setItem(
+                        "xdoc-user",
+                        JSON.stringify({ name: "Google User", gender: "other", role: "patient" })
+                      );
+                      window.location.href = "/";
+                    }}
+                  >
+                    Continue with Google
+                  </button>
+                  <button
+                    type="button"
+                    className="button-primary w-full justify-center"
+                    onClick={() => {
+                      setStep("signup");
+                      setAccountType("patient");
+                    }}
+                  >
+                    Continue with OTP
+                  </button>
+                </div>
+              </div>
+              <div className="rounded-2xl border border-dashed border-[color:var(--stroke)] bg-white p-4 text-sm text-[color:var(--muted)]">
+                New to XDOC?{" "}
+                <button
+                  type="button"
+                  className="text-[color:var(--accent-3)] underline"
+                  onClick={() => setStep("signup")}
+                >
+                  Create an account
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          {step === "signup" ? (
+            <>
+              <div className="grid gap-4">
             <div>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <label className="text-sm text-[color:var(--muted)]">
@@ -267,8 +315,8 @@ export default function AuthPage() {
                 OTP sent to {email} and {phone}.
               </p>
             ) : null}
-          </div>
-          <div className="mt-6 grid gap-4">
+              </div>
+              <div className="mt-6 grid gap-4">
             <div>
               <label className="text-sm text-[color:var(--muted)]">Enter OTP</label>
               <input
@@ -306,7 +354,9 @@ export default function AuthPage() {
             {status === "verified" ? (
               <p className="text-sm text-[color:var(--accent-3)]">Verified! You&apos;re logged in.</p>
             ) : null}
-          </div>
+              </div>
+            </>
+          ) : null}
         </div>
 
         <aside className="card h-fit">
