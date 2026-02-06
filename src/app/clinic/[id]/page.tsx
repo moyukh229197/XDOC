@@ -172,13 +172,15 @@ export default function ClinicProfilePage() {
                 <p className="text-sm text-[color:var(--muted)]">
                   Fee ₹{doctor.fee} • {doctor.experience}
                 </p>
+                <p className="text-sm text-[color:var(--muted)]">
+                  {doctor.specialty} • {doctor.location}
+                </p>
                 <div className="mt-auto flex items-center justify-between">
-                  <span className="pill">{doctor.location}</span>
                   <div className="flex items-center gap-2">
-                    <Link className="button-outline" href={`/doctors/${doctor.id}`}>
+                    <Link className="button-outline whitespace-nowrap" href={`/doctors/${doctor.id}`}>
                       View profile
                     </Link>
-                    <Link className="button-primary" href={`/book/${doctor.id}`}>
+                    <Link className="button-primary whitespace-nowrap" href={`/book/${doctor.id}`}>
                       Book now
                     </Link>
                   </div>
@@ -191,6 +193,35 @@ export default function ClinicProfilePage() {
             Doctors for this clinic will appear here once they are added.
           </p>
         )}
+      </div>
+
+      <div className="mt-10 card">
+        <h2 className="text-2xl">Clinic location</h2>
+        <p className="mt-2 text-sm text-[color:var(--muted)]">
+          {clinic.name} • {clinic.location}
+        </p>
+        <div className="mt-4 overflow-hidden rounded-2xl border border-[color:var(--stroke)]">
+          <iframe
+            title="Clinic location map"
+            src={`https://www.google.com/maps?q=${encodeURIComponent(
+              `${clinic.name}, ${clinic.location}`
+            )}&output=embed`}
+            className="h-56 w-full"
+            loading="lazy"
+          />
+        </div>
+        <div className="mt-4 flex justify-end">
+          <a
+            className="button-primary"
+            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+              `${clinic.name}, ${clinic.location}`
+            )}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Get directions
+          </a>
+        </div>
       </div>
     </div>
   );

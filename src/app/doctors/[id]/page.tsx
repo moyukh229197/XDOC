@@ -163,6 +163,37 @@ export default function DoctorProfile({ params }: PageProps) {
             </div>
           </div>
 
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold">Clinic location</h2>
+            <p className="mt-2 text-sm text-[color:var(--muted)]">
+              {doctor.clinic} • {doctor.location}
+            </p>
+            <div className="mt-4 rounded-2xl border border-[color:var(--stroke)] bg-white p-4">
+              <div className="overflow-hidden rounded-2xl border border-[color:var(--stroke)]">
+                <iframe
+                  title="Clinic location map"
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(
+                    `${doctor.clinic}, ${doctor.location}`
+                  )}&output=embed`}
+                  className="h-56 w-full"
+                  loading="lazy"
+                />
+              </div>
+              <div className="mt-4 flex justify-end">
+                <a
+                  className="button-primary"
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                    `${doctor.clinic}, ${doctor.location}`
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Get directions
+                </a>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-8 grid gap-3">
             <h3 className="text-lg font-semibold">Patient stories</h3>
             <div className="rounded-2xl border border-[color:var(--stroke)] bg-white p-4">

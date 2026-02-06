@@ -9,7 +9,12 @@ export default function AppointmentsPage() {
           <p className="text-sm uppercase tracking-[0.3em] text-[color:var(--muted)]">Appointments</p>
           <h1 className="section-title">Your appointments</h1>
         </div>
-        <Link className="button-outline" href="/">Back to home</Link>
+        <div className="flex flex-wrap gap-3">
+          <Link className="button-outline" href="/appointments/upcoming">
+            Upcoming bookings
+          </Link>
+          <Link className="button-outline" href="/">Back to home</Link>
+        </div>
       </div>
 
       <div className="mt-8 grid gap-6">
