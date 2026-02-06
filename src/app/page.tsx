@@ -9,6 +9,9 @@ import { bookings, clinicIdFromName, clinics, doctors, neighborhoods, specialtie
 export default function Home() {
   const [doctorList, setDoctorList] = useState(doctors);
   const topDoctors = useMemo(() => doctorList.slice(0, 3), [doctorList]);
+  const [heroLocation, setHeroLocation] = useState(neighborhoods[0]);
+  const [heroSpecialty, setHeroSpecialty] = useState(specialties[0]);
+  const [heroVisitType, setHeroVisitType] = useState("In-person");
   const emergencyContacts = [
     { label: "Ambulance", phone: "102" },
     { label: "District Hospital", phone: "+91 98765 43210" },
@@ -31,11 +34,11 @@ export default function Home() {
     <div className="pt-6 pb-8 relative">
       <div className="rajbari-sketch" aria-hidden="true" />
       {/* Reduced header vertical padding to remove excess space around logo/nav. */}
-      <header className="container pt-0 pb-2 fade-up">
+      <header className="container pt-0 pb-1 fade-up">
         <nav className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-3 -mb-10">
-            <div className="flex h-64 items-center justify-center">
-              <img src="/images/xdoc-logo-wide.png" alt="XDOC logo" className="h-64 w-auto" />
+          <div className="flex items-center gap-3 -mb-2 -mt-4">
+            <div className="flex h-16 items-center justify-center">
+              <img src="/images/xdoc-logo-wide.png" alt="XDOC logo" className="h-16 w-auto object-contain" />
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-sm text-[color:var(--muted)]">
@@ -50,55 +53,19 @@ export default function Home() {
           </div>
         </nav>
 
-        <div className="mt-4 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div>
-            <span className="badge">Patients first</span>
-            <h2 className="section-title mt-4">
-              Know your doctor’s availability before you travel to Cooch Behar.
-            </h2>
-            {/* Updated hero copy to highlight availability before travel. */}
-            <p className="mt-4 text-lg text-[color:var(--muted)]">
-              See doctor availability, fees, and your expected turn time before coming to town.
-              Book a slot and travel with confidence.
-            </p>
-            {/* Added local context line to reduce travel anxiety. */}
-            <p className="mt-2 text-sm text-[color:var(--muted)]">
-              Serving Cooch Behar town and nearby subdivisions.
-            </p>
-
-            <div className="glass mt-8 rounded-[28px] p-6">
-              <div className="grid gap-4 md:grid-cols-3">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">
-                    Location
-                  </p>
-                  <select className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3">
-                    {neighborhoods.map((area) => (
-                      <option key={area}>{area}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">
-                    Specialty
-                  </p>
-                  <select className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3">
-                    {specialties.map((specialty) => (
-                      <option key={specialty}>{specialty}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">
-                    Visit Type
-                  </p>
-                  <select className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3">
-                    <option>In-person</option>
-                    <option>Telehealth</option>
-                    <option>Either</option>
-                  </select>
-                </div>
-              </div>
+        <div className="hero-v2 mt-4">
+          <div className="hero-v2-grid">
+            <div className="hero-v2-left">
+              <span className="hero-kicker">Expert Doctors • Cooch Behar</span>
+              <h2 className="section-title hero-title mt-4">
+                <span className="block">Find trusted doctors faster,</span>
+                <span className="block">with real-time availability</span>
+                <span className="block hero-location">COOCH BEHAR</span>
+              </h2>
+              <p className="mt-4 text-lg text-[color:var(--muted)]">
+                Check clinic load, fees, and next slots before you travel. Book in minutes and get
+                reminders by SMS and email.
+              </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <Link className="button-primary" href="/search">
                   Find doctors today
@@ -107,74 +74,85 @@ export default function Home() {
                   View clinic schedules
                 </Link>
               </div>
+              <div className="mt-6 flex flex-wrap gap-5 text-sm text-[color:var(--muted)]">
+                <div>
+                  <p className="text-2xl font-semibold text-[color:var(--ink)]">38</p>
+                  <p>Active clinics</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-semibold text-[color:var(--ink)]">1,260+</p>
+                  <p>Appointments booked</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-semibold text-[color:var(--ink)]">4.7★</p>
+                  <p>Patient satisfaction</p>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-6 text-sm text-[color:var(--muted)]">
-              <div>
-                <p className="text-2xl font-semibold text-[color:var(--ink)]">38</p>
-                <p>Active clinics</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-[color:var(--ink)]">1,260+</p>
-                <p>Appointments booked</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-[color:var(--ink)]">4.7★</p>
-                <p>Patient satisfaction</p>
-              </div>
+            <div className="hero-v2-right">
+              <img
+                src="/images/hero-doctor.png"
+                alt="XDOC doctor"
+                className="hero-v2-image"
+              />
             </div>
           </div>
 
-          <div className="card relative overflow-hidden">
-            <h3 className="text-2xl">Next available consultation</h3>
-            <p className="mt-2 text-[color:var(--muted)]">
-              Dr. Ananya Sen • General Physician
-            </p>
-            <div className="mt-6 grid gap-3">
-              <div className="flex items-center justify-between rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3">
-                <div>
-                  <p className="font-semibold">Today, 4:30 PM</p>
-                  <p className="text-sm text-[color:var(--muted)]">Telehealth</p>
-                  {/* Added booking fee trust note near price. */}
-                  <p className="mt-1 text-xs text-[color:var(--muted)]">
-                    Booking fee ₹10 • Booking fee adjusted at clinic. No hidden charges.
-                  </p>
-                </div>
-                <Link className="button-primary whitespace-nowrap" href="/book/dr-sen">
-                  Book now
-                </Link>
-              </div>
-              <div className="flex items-center justify-between rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3">
-                <div>
-                  <p className="font-semibold">Today, 6:00 PM</p>
-                  <p className="text-sm text-[color:var(--muted)]">Dermatology</p>
-                </div>
-                <Link className="button-outline" href="/doctors/dr-basak">
-                  View profile
-                </Link>
-              </div>
-            </div>
-            <div className="mt-6 rounded-2xl border border-[color:var(--stroke)] bg-white p-5">
-              <p className="text-sm uppercase tracking-[0.25em] text-[color:var(--muted)]">
-                Your bookings
-              </p>
-              <div className="mt-4 grid gap-3 text-sm">
-                {bookings.slice(0, 2).map((booking) => (
-                  <div
-                    key={booking.id}
-                    className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-[color:var(--stroke)] bg-[color:var(--card)] px-4 py-3"
-                  >
-                    <div>
-                      <p className="font-semibold">{booking.doctor}</p>
-                      <p className="text-[color:var(--muted)]">
-                        {booking.date} • {booking.time} • {booking.type}
-                      </p>
-                    </div>
-                    <span className="pill">{booking.status}</span>
-                  </div>
+          <div className="hero-v2-search">
+            <div className="hero-input">
+              <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">Location</p>
+              <select
+                className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                value={heroLocation}
+                onChange={(e) => setHeroLocation(e.target.value)}
+              >
+                {neighborhoods.map((area) => (
+                  <option key={area}>{area}</option>
                 ))}
-              </div>
+              </select>
             </div>
+            <div className="hero-input">
+              <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">Specialty</p>
+              <select
+                className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                value={heroSpecialty}
+                onChange={(e) => setHeroSpecialty(e.target.value)}
+              >
+                {specialties.map((specialty) => (
+                  <option key={specialty}>{specialty}</option>
+                ))}
+              </select>
+            </div>
+            <div className="hero-input">
+              <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">Visit Type</p>
+              <select
+                className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+                value={heroVisitType}
+                onChange={(e) => setHeroVisitType(e.target.value)}
+              >
+                <option>In-person</option>
+                <option>Telehealth</option>
+                <option>Either</option>
+              </select>
+            </div>
+            <div className="hero-input">
+              <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--muted)]">Date</p>
+              <input
+                type="date"
+                className="mt-2 w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+              />
+            </div>
+            <Link
+              className="button-primary hero-v2-search-btn"
+              href={`/search?location=${encodeURIComponent(
+                heroLocation
+              )}&specialty=${encodeURIComponent(
+                heroSpecialty
+              )}&visitType=${encodeURIComponent(heroVisitType)}`}
+            >
+              Search Doctors
+            </Link>
           </div>
         </div>
       </header>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff3e5"/>
+      <stop offset="0.55" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#e8f4f3"/>
+    </linearGradient>
+    <linearGradient id="coat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e8eef6"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8a3d"/>
+      <stop offset="1" stop-color="#ff5a2c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" rx="40" fill="url(#bg)"/>
+  <circle cx="870" cy="300" r="220" fill="#ffe1c6" opacity="0.65"/>
+  <circle cx="320" cy="180" r="120" fill="#e5f2ff" opacity="0.8"/>
+
+  <g transform="translate(180,140)">
+    <rect x="110" y="210" width="620" height="520" rx="60" fill="url(#coat)" stroke="#d8dfe9" stroke-width="3"/>
+    <rect x="210" y="360" width="220" height="300" rx="28" fill="#f4f7fb"/>
+    <rect x="480" y="360" width="220" height="300" rx="28" fill="#f4f7fb"/>
+    <path d="M420 210h160l40 120h-240z" fill="#dfe8f6"/>
+    <circle cx="420" cy="180" r="90" fill="#f7d6bf" stroke="#e6c2a7" stroke-width="4"/>
+    <path d="M355 160c20-50 150-70 190-10 30 45-10 120-20 120H320c-20-20-10-70 35-110z" fill="#2f2f33"/>
+    <rect x="360" y="260" width="120" height="50" rx="25" fill="#f2b38c"/>
+    <rect x="270" y="330" width="300" height="120" rx="40" fill="#ffffff"/>
+    <path d="M300 330c50 40 180 40 240 0" stroke="#d2d9e4" stroke-width="6" fill="none"/>
+    <circle cx="540" cy="430" r="26" fill="#b7c7dc"/>
+    <circle cx="560" cy="455" r="12" fill="#6b7b90"/>
+    <path d="M340 430c-50 50-80 140-90 200" stroke="#c0c7d1" stroke-width="16" stroke-linecap="round"/>
+    <path d="M500 430c50 50 80 140 90 200" stroke="#c0c7d1" stroke-width="16" stroke-linecap="round"/>
+    <rect x="520" y="520" width="220" height="150" rx="24" fill="#ffffff" stroke="#e3e7ee" stroke-width="3"/>
+    <rect x="540" y="545" width="180" height="18" rx="9" fill="#dde6f2"/>
+    <rect x="540" y="580" width="140" height="18" rx="9" fill="#dde6f2"/>
+    <rect x="540" y="615" width="120" height="18" rx="9" fill="#dde6f2"/>
+    <circle cx="300" cy="600" r="60" fill="url(#accent)"/>
+    <path d="M300 570v60M270 600h60" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
+  </g>
+</svg>

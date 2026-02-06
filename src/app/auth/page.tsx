@@ -58,40 +58,37 @@ export default function AuthPage() {
               <div>
                 <label className="text-sm text-[color:var(--muted)]">Sign in</label>
                 <div className="mt-3 grid gap-3">
-                  <button
-                    type="button"
-                    className="button-outline w-full justify-center"
-                    onClick={() => {
-                      window.localStorage.setItem(
-                        "xdoc-user",
-                        JSON.stringify({ name: "Google User", gender: "other", role: "patient" })
-                      );
-                      window.location.href = "/";
-                    }}
+                  <a
+                    className="button-outline flex w-full items-center justify-center gap-2"
+                    href="https://accounts.google.com/signin"
+                    target="_blank"
+                    rel="noreferrer"
                   >
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M44.5 20H24V28.5H35.8C34.1 33.8 29.5 37.5 24 37.5C17.1 37.5 11.5 31.9 11.5 25C11.5 18.1 17.1 12.5 24 12.5C27 12.5 29.8 13.6 32 15.4L38 9.4C34.3 6.1 29.4 4 24 4C12.4 4 3 13.4 3 25C3 36.6 12.4 46 24 46C35.6 46 45 36.6 45 25C45 23.3 44.8 21.6 44.5 20Z" fill="#FFC107"/>
+                      <path d="M6.1 14.7L13.1 19.8C15 15.5 19.2 12.5 24 12.5C27 12.5 29.8 13.6 32 15.4L38 9.4C34.3 6.1 29.4 4 24 4C16 4 9 8.5 6.1 14.7Z" fill="#FF3D00"/>
+                      <path d="M24 46C29.3 46 34.1 44 37.8 40.8L31.3 35.3C29.2 36.9 26.7 37.8 24 37.8C18.5 37.8 13.9 34.1 12.2 28.9L5.3 34.2C8.2 40.5 15.3 46 24 46Z" fill="#4CAF50"/>
+                      <path d="M44.5 20H24V28.5H35.8C35 31 33.4 33.4 31.2 35L31.3 35.3L37.8 40.8C37.3 41.3 45 35.5 45 25C45 23.3 44.8 21.6 44.5 20Z" fill="#1976D2"/>
+                    </svg>
                     Continue with Google
-                  </button>
+                  </a>
+                  <Link className="button-primary w-full justify-center text-center" href="/auth/otp">
+                    Continue with OTP
+                  </Link>
                   <button
                     type="button"
-                    className="button-primary w-full justify-center"
-                    onClick={() => {
-                      setStep("signup");
-                      setAccountType("patient");
-                    }}
+                    className="w-full rounded-2xl border border-[color:var(--stroke)] bg-[color:var(--card)] px-4 py-3 font-semibold text-[color:var(--ink)] transition hover:bg-white"
+                    onClick={() => setStep("signup")}
                   >
-                    Continue with OTP
+                    New to XDOC? Create an account
                   </button>
                 </div>
-              </div>
-              <div className="rounded-2xl border border-dashed border-[color:var(--stroke)] bg-white p-4 text-sm text-[color:var(--muted)]">
-                New to XDOC?{" "}
-                <button
-                  type="button"
-                  className="text-[color:var(--accent-3)] underline"
-                  onClick={() => setStep("signup")}
-                >
-                  Create an account
-                </button>
               </div>
             </div>
           ) : null}

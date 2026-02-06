@@ -13,6 +13,14 @@
   --stroke: #e7dac9;
 }
 
+@font-face {
+  font-family: "MegazinePoster";
+  src: url("/fonts/MegazinePosterDEMO-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -67,6 +75,7 @@ body {
   width: 100%;
   height: 220px;
   object-fit: cover;
+  margin: 10px 0;
 }
 
 h1,
@@ -74,6 +83,12 @@ h2,
 h3 {
   font-family: var(--font-fraunces), "Fraunces", serif;
   letter-spacing: -0.02em;
+}
+
+.hero-v2 .section-title {
+  font-family: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 a {
@@ -258,4 +273,128 @@ a {
 
 .delay-2 {
   animation-delay: 0.3s;
+}
+
+.hero-v2 {
+  border: 1px solid var(--stroke);
+  border-radius: 28px;
+  padding: 1.2rem;
+  background:
+    radial-gradient(800px 300px at 0% 100%, rgba(242, 100, 48, 0.08) 0%, transparent 65%),
+    radial-gradient(700px 360px at 100% 0%, rgba(22, 105, 122, 0.14) 0%, transparent 62%),
+    linear-gradient(130deg, #fff9f1 0%, #fffdf8 50%, #f3fafc 100%);
+  box-shadow: 0 22px 50px rgba(18, 16, 14, 0.1);
+}
+
+.hero-v2-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.hero-v2-left {
+  padding: 0.5rem;
+}
+
+.hero-location {
+  font-family: "MegazinePoster", var(--font-fraunces), serif;
+  font-weight: 400;
+  font-size: 1.6em;
+  background: linear-gradient(135deg, #ff8a3d 0%, #ff5a2c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+.hero-title {
+  line-height: 1.05;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  background: #fff;
+}
+
+.hero-v2-right {
+  position: relative;
+  border-radius: 24px;
+  background: transparent;
+  padding: 0;
+}
+
+.hero-v2-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 22px;
+  box-shadow: none !important;
+}
+
+.hero-v2-overlay {
+  position: absolute;
+  right: 6%;
+  bottom: 8%;
+  width: min(280px, 55%);
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 16px 32px rgba(18, 16, 14, 0.22);
+}
+
+.hero-v2-floating {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  background: color-mix(in srgb, white 88%, transparent);
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  padding: 0.85rem 1rem;
+  min-width: 220px;
+  box-shadow: 0 12px 24px rgba(18, 16, 14, 0.12);
+}
+
+.hero-v2-search {
+  margin-top: 1.1rem;
+  border: 1px solid var(--stroke);
+  border-radius: 24px;
+  background: #ffffff;
+  padding: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.hero-input select,
+.hero-input input {
+  font-size: 0.85rem;
+  box-shadow: 0 10px 24px rgba(18, 16, 14, 0.08);
+  border-color: #e8dccc;
+}
+
+.hero-input p {
+  font-size: 0.68rem;
+}
+
+.hero-v2-search-btn {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .hero-v2-grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+  }
+
+  .hero-v2-search {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: end;
+  }
 }

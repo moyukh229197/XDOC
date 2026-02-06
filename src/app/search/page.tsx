@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   doctors,
   getTodayAvailabilityStatus,
@@ -14,12 +15,15 @@ export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [selectedSpecialty, setSelectedSpecialty] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedVisitType, setSelectedVisitType] = useState("");
   const [applied, setApplied] = useState({
     query: "",
     specialty: "",
     location: "",
+    visitType: "",
   });
   const [doctorList, setDoctorList] = useState(doctors);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     fetch("/api/doctors")
@@ -32,10 +36,32 @@ export default function SearchPage() {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const q = searchParams.get("query") ?? "";
+    const loc = searchParams.get("location") ?? "";
+    const spec = searchParams.get("specialty") ?? "";
+    const vt = searchParams.get("visitType") ?? "";
+    setQuery(q);
+    setSelectedLocation(loc);
+    setSelectedSpecialty(spec);
+    setSelectedVisitType(vt);
+    setApplied({ query: q, specialty: spec, location: loc, visitType: vt });
+  }, [searchParams]);
+
+  useEffect(() => {
+    setApplied({
+      query,
+      specialty: selectedSpecialty,
+      location: selectedLocation,
+      visitType: selectedVisitType,
+    });
+  }, [query, selectedSpecialty, selectedLocation, selectedVisitType]);
+
   const filteredDoctors = useMemo(() => {
     const q = applied.query.trim().toLowerCase();
     const s = applied.specialty;
     const l = applied.location;
+    const v = applied.visitType;
 
     return doctorList.filter((doctor) => {
       const matchesQuery =
@@ -44,7 +70,9 @@ export default function SearchPage() {
         doctor.clinic.toLowerCase().includes(q);
       const matchesSpecialty = !s || doctor.specialty === s;
       const matchesLocation = !l || doctor.location === l;
-      return matchesQuery && matchesSpecialty && matchesLocation;
+      const matchesVisitType =
+        !v || v === "Either" || (v === "Telehealth" ? doctor.telehealth : true);
+      return matchesQuery && matchesSpecialty && matchesLocation && matchesVisitType;
     });
   }, [applied, doctorList]);
 
@@ -63,7 +91,7 @@ export default function SearchPage() {
       </div>
 
       <div className="glass mt-8 rounded-[24px] p-6">
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-5">
           <input
             className="w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
             placeholder="Doctor or clinic"
@@ -90,6 +118,16 @@ export default function SearchPage() {
               <option key={area}>{area}</option>
             ))}
           </select>
+          <select
+            className="w-full rounded-2xl border border-[color:var(--stroke)] bg-white px-4 py-3"
+            value={selectedVisitType}
+            onChange={(event) => setSelectedVisitType(event.target.value)}
+          >
+            <option value="">All visit types</option>
+            <option>In-person</option>
+            <option>Telehealth</option>
+            <option>Either</option>
+          </select>
           <button
             className="button-primary w-full"
             onClick={() =>
@@ -97,6 +135,7 @@ export default function SearchPage() {
                 query,
                 specialty: selectedSpecialty,
                 location: selectedLocation,
+                visitType: selectedVisitType,
               })
             }
           >
